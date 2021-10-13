@@ -1,0 +1,95 @@
+\chapterimage{brunton-machine.jpg} % Chapter heading image
+
+\chapter{Ponteiros e Strings}
+O estudo de strings é útil para vincular ainda mais a relação entre ponteiros e \textit{arrays}. Também torna fácil ilustrar como algumas das funções de string C padrão podem ser implementadas. Finalmente, ilustra como e quando os ponteiros podem e devem ser passados para funções.
+
+Em C, strings são \textit{arrays} de caracteres. Isso não é necessariamente verdade em outras linguagens. Em \textbf{Java}, \textbf{Python}, \textbf{PHP} e várias outras linguagens, uma string tem seu próprio tipo de dados. Mas em C isso não acontece. Em C, uma string é um \textit{array} de caracteres terminado com um caractere binário zero (escrito como `\textbackslash0'). Para começar nossa discussão, escreveremos um código que, embora seja útil para fins ilustrativos, você provavelmente nunca escreveria em um programa real. Considere, por exemplo:
+\begin{lstlisting}
+	char my_string[40];
+	
+	my_string[0] = 'T';
+	my_string[1] = 'e';
+	my_string[2] = 'd':
+	my_string[3] = '\0';
+\end{lstlisting}
+
+Embora nunca se construísse uma string como essa, o resultado final é uma string no sentido de que é um \textit{array} de caractere\textbf{s terminado com um caractere nulo}. Por definição, em C, uma string é um \textit{array} de caracteres terminado com o caractere nulo. Esteja ciente de que ``nul'' \textbf{não é} o mesmo que ``\textbf{NULL}''. O nulo se refere a um zero conforme definido pela sequência de escape '\textbf{\textbackslash0}'. Ou seja, ocupa um byte de memória. NULL, por outro lado, é o nome da macro usada para inicializar ponteiros nulos. NULL é definido (com \#define) em um arquivo de cabeçalho em seu compilador C, o caractere nulo não pode ser definido por \#define.
+
+Uma vez que escrever o código acima consumiria muito tempo, C permite duas maneiras alternativas de obter a mesma coisa. Primeiro, pode-se escrever:
+\begin{lstlisting}
+	char my_string[40] = {'T', 'e', 'd', '\0',};
+\end{lstlisting}
+
+Mas isso também exige mais digitação do que o conveniente. Então, C permite:
+\begin{lstlisting}
+	char my_string[40] = "Ted";
+\end{lstlisting}
+
+Quando as aspas duplas são usadas, em vez das aspas simples como foi feito nos exemplos anteriores, o caractere nulo ('\textbf{\textbackslash0}') é automaticamente anexado ao final da string.
+
+Em todos os casos acima, acontece a mesma coisa. O compilador separa um bloco contíguo de memória de 40 bytes para conter caracteres e o inicializa de forma que os primeiros 4 caracteres sejam \textbf{Ted\textbackslash0}.
+
+Agora, considere o seguinte programa:
+\lstinputlisting[label=prog:strings, caption=Ponteiros e strings, numbers=left]{code/prog3-1.c}
+
+No Programa \ref{prog:strings}, começamos definindo dois \textit{arrays} de caracteres de 80 caracteres cada. Como eles são definidos globalmente, eles são inicializados com todos os '\textbackslash0's primeiro. Então, \textbf{strA} tem os primeiros 36 caracteres inicializados para a string entre aspas (cada caractere acentuado ou cedilha ocupa o espaço de dois caracteres).
+
+Agora, entrando no código, declaramos dois ponteiros de caracteres e mostramos a string na tela. Em seguida, ``apontamos'' o ponteiro \textbf{pA} para \textbf{strA}. Ou seja, por meio da instrução de atribuição, copiamos o endereço de \textbf{strA[0]} em nossa variável \textbf{pA}. Agora usamos \textbf{puts()} para mostrar o que é apontado por \textbf{pA} na tela. Considere aqui que o protótipo de função para \textbf{puts()} é:
+\begin{lstlisting}
+	int puts(const char *s);
+\end{lstlisting}
+
+Por enquanto, ignore o \textbf{const}. O parâmetro passado para \textbf{puts()} é um ponteiro, isto é, o \textbf{valor} de um ponteiro (já que todos os parâmetros em C são passados por valor), e o valor de um ponteiro é o endereço para o qual ele aponta, ou, simplesmente, um endereço . Assim, quando escrevemos \textbf{puts(strA);} como vimos, estamos passando o endereço de \textbf{strA[0]}.
+
+Da mesma forma, quando escrevemos \textbf{puts(pA);} estamos passando o mesmo endereço, pois definimos pA = strA;
+
+Dado isso, siga o código até a instrução \textbf{while()} na linha A. A linha A declara:
+
+\textit{Enquanto o caractere apontado por \textbf{pA} (ou seja, \textbf{*pA}) não for um caractere nulo (ou seja, a terminação `\textbf{\textbackslash0}'), faça a linha B.}
+
+A linha B declara: 
+
+\textit{Copie o caractere apontado por \textbf{pA} para o espaço apontado por \textbf{pB}, então incremente \textbf{pA} de forma que aponte para o próximo caractere e \textbf{pB} para que aponte para o próximo espaço.}
+
+Depois de copiar o último caractere, \textbf{pA} agora aponta para o caractere \textit{nulo} de terminação e o loop termina. No entanto, não copiamos o caractere nulo. E, por definição, uma string em C deve ter terminação nula. Então, adicionamos o caractere nulo com a linha C.
+
+É muito educativo executar este programa com seu \textit{debugger} enquanto acompanha \textbf{strA}, \textbf{strB}, \textbf{pA} e \textbf{pB} e avança passo a passo pelo programa. É ainda mais educacional se, em vez de simplesmente definir \textbf{strB[]} como foi feito acima, inicialize-o também com algo como:
+
+\begin{lstlisting}
+	strB[80] = "12345678901234567890123456789012345678901234567890"
+\end{lstlisting}
+onde o número de dígitos usados é maior do que o comprimento de \textbf{strA} e, em seguida, repita o procedimento de passo único enquanto observa as variáveis acima. Experimente isso!
+
+Voltando ao protótipo de \textbf{puts()} por um momento, o ``\textit{const}'' usado como um modificador de parâmetro informa ao usuário que a função não modificará a string apontada por \textbf{s}, ou seja, ela tratará aquela string como uma constante.
+
+Claro, o que o programa acima ilustra é uma maneira simples de copiar uma string. Depois de brincar com os itens acima até que você tenha uma boa compreensão do que está acontecendo, podemos prosseguir com a criação de nosso próprio substituto para o \textbf{strcpy()} padrão que vem com C. Pode ser parecido com:
+\lstinputlisting[label=prog:meustrcpy, caption=Meu strcpy(), numbers=left, lastline=10]{code/prog3-2.c}
+
+Nesse caso, segui a prática usada na rotina padrão de retornar um ponteiro ao destino.
+
+Novamente, a função é projetada para aceitar os valores de dois ponteiros de caracteres, ou seja, endereços e, portanto, no programa anterior, poderíamos escrever:
+\lstinputlisting[label=prog:mainmeustrcpy, caption=Main de meu\_strcpy(), numbers=left, firstline=12, lastline=15]{code/prog3-2.c}
+
+Eu me desviei um pouco da forma usada no padrão C, que teria o protótipo:
+\begin{lstlisting}
+	char *meu_strcpy(char *destino, const char *fonte);
+\end{lstlisting}
+
+Aqui, o modificador ``\textit{const}'' é usado para garantir ao usuário que a função não modificará o conteúdo apontado pelo ponteiro de origem. Você pode provar isso modificando a função acima, e seu protótipo, para incluir o modificador ``\textit{const}''  conforme mostrado. Então, dentro da função, você pode adicionar uma instrução que tenta alterar o conteúdo do que é apontado pela fonte, como:
+\begin{lstlisting}
+	*fonte = 'X';
+\end{lstlisting}
+que normalmente mudaria o primeiro caractere da string para um X. O modificador \textit{const} deve fazer com que seu compilador pegue isso como um erro. Experimente e veja.
+
+Agora, vamos considerar algumas das coisas que os exemplos acima nos mostraram. Em primeiro lugar, considere o fato de que \textbf{*ptr++} deve ser interpretado como retornando o valor apontado por \textbf{ptr} e, em seguida, incrementando o valor do ponteiro. Isso tem a ver com a precedência dos operadores. Se escrevêssemos \textbf{(*ptr)++}, não incrementaríamos o ponteiro, mas aquilo para o qual o ponteiro aponta! Ou seja, se usado no primeiro caractere da string de exemplo acima, o `T' seria incrementado para um `U'. Você pode escrever alguns códigos simples de exemplo  para ilustrar isso.
+
+Lembre-se novamente de que uma string nada mais é do que um \textit{array} de caracteres, com o último caractere sendo '\textbf{\textbackslash0}'. O que fizemos acima foi lidar com a cópia de um \textit{array}. Acontece que é um \textit{array} de caracteres, mas a técnica poderia ser aplicada a um \textit{array} de inteiros, doubles, etc. Nesses casos, no entanto, não estaríamos lidando com strings e, portanto, o final do \textit{array} não seria marcado com um valor especial como o caractere nulo. Poderíamos implementar uma versão que contasse com um valor especial para identificar o fim. Por exemplo, podemos copiar um \textit{array} de inteiros positivos marcando o final com um inteiro negativo. Por outro lado, é mais comum que, quando escrevemos uma função para copiar um \textit{\textit{array}} de itens que não sejam strings, passemos à função o número de itens a serem copiados, bem como o endereço do \textit{array}, por exemplo, algo como o seguinte protótipo pode indicar:
+\begin{lstlisting}
+	void int_copy(int *ptrA, int *ptrB, int n);
+\end{lstlisting}
+onde \textbf{n} é o número de inteiros a serem copiados. Você pode querer brincar com essa ideia e criar um \textit{array} de inteiros e ver se consegue escrever a função \textbf{int\_copy(}) e fazê-la funcionar.
+
+Isso permite o uso de funções para manipular grandes \textit{arrays}. Por exemplo, se temos um \textit{array} de 5000 inteiros que queremos manipular com uma função, precisamos apenas passar para essa função o endereço do \textit{array} (e qualquer informação auxiliar como \textbf{n} acima, dependendo do que estamos fazendo). O \textit{array} em si não é passado, ou seja, o \textit{array} de inteiros não é copiado e colocado na pilha antes de chamar a função, apenas seu endereço é enviado.
+
+Isso é diferente de passar, digamos, um número inteiro para uma função. Quando passamos um inteiro, fazemos uma cópia do inteiro, ou seja, obtemos seu valor e o colocamos na pilha. Dentro da função, qualquer manipulação do valor passado não pode de forma alguma afetar o inteiro original. Mas, com \textit{arrays} e ponteiros, podemos passar o endereço da variável e, portanto, manipular os valores das variáveis originais.
+

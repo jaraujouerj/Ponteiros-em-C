@@ -42,6 +42,8 @@
 
 \usepackage{listings}
 %\usepackage{listingsutf8}
+
+\newcommand{\lstcodestyle}{
 \lstset{language=C, 
 	keywordstyle=\color{blue},
 	basicstyle=\small\ttfamily,,
@@ -59,11 +61,52 @@
 	{ê}{{\^e}}1  {ô}{{\^o}}1 {õ}{{\~o}}1 {ç}{{\c{c}}}1 {º}{${^\circ}$}1, 
 	commentstyle=\color{red},
 	tabsize=2,
+	stepnumber=1,
 	stringstyle=\color{red},
 	columns = fullflexible, keepspaces=true,
 	breakatwhitespace=true,
-	backgroundcolor=\color{cinza}
+	backgroundcolor=\color{cinza},
+	frame=none, 
+	framerule=0pt, 
+	numberblanklines=false,
+	escapeinside={(*@}{@*)}
+}
 } 
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{terminalbgcolor}{HTML}{330033}
+\definecolor{terminalrulecolor}{HTML}{666666}
+\newcommand{\lstconsolestyle}{
+	\lstset{
+		backgroundcolor=\color{terminalbgcolor},
+		basicstyle=\color{white}\fontfamily{fvm}\footnotesize\selectfont,
+		breakatwhitespace=false,  
+		breaklines=true,
+		captionpos=b,
+		commentstyle=\color{mygreen},
+		deletekeywords={...},
+		escapeinside={\%*}{*)},
+		extendedchars=true,
+		frame=single,
+		keepspaces=true,
+		keywordstyle=\color{blue},
+		language=,
+		morekeywords={*,...},
+		numbers=none,
+		numbersep=5pt,
+		framerule=2pt,
+		numberstyle=\color{mygray}\tiny\selectfont,
+		rulecolor=\color{terminalrulecolor},
+		showspaces=false,
+		showstringspaces=false,
+		showtabs=false,
+		stepnumber=2,
+		stringstyle=\color{mymauve},
+		tabsize=2
+	}
+}
 
 %----------------------------------------------------------------------------------------
 %	MARGINS

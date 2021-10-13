@@ -1,4 +1,4 @@
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{operator.jpg} % Chapter heading image
 
 \chapter{Ponteiros e Arrays}
 Ok, vamos em frente. Vamos considerar porque precisamos identificar o tipo de variável para a qual um ponteiro aponta, como em:
@@ -10,7 +10,7 @@ Uma razão para fazer isso é que mais tarde, uma vez que \textbf{ptr} ``aponta 
 \begin{lstlisting}
 	*ptr = 2;
 \end{lstlisting}
-o compilador saberá quantos bytes copiar para aquele local de memória apontado por \textbf{ptr}. Se \textbf{ptr} for declarado apontando para um inteiro, 4 bytes serão copiados, se for longo, 8 bytes serão copiados. Da mesma forma, para \textit{floats} e \textit{doubles}, o número apropriado será copiado. Porém, definir o tipo para o qual o ponteiro aponta permite uma série de outras maneiras interessantes que um compilador pode interpretar o código. Por exemplo, considere um bloco na memória consistindo em dez inteiros em uma linha. Ou seja, 20 bytes de memória são reservados para conter 10 inteiros.
+o compilador saberá quantos bytes copiar para aquele local de memória apontado por \textbf{ptr}. Se \textbf{ptr} for declarado apontando para um inteiro, 4 bytes serão copiados, se for longo, 8 bytes serão copiados. Da mesma forma, para \textit{floats} e \textit{doubles}, o número apropriado será copiado. Porém, definir o tipo para o qual o ponteiro aponta permite uma série de outras maneiras interessantes que um compilador pode interpretar o código. Por exemplo, considere um bloco na memória consistindo em dez inteiros em uma linha. Ou seja, 40 bytes de memória são reservados para conter 10 inteiros.
 
 Agora, digamos que apontamos nosso ponteiro de inteiro \textbf{ptr} para o primeiro desses inteiros. Além disso, digamos que o inteiro esteja localizado na posição de memória 100 (decimal). O que acontece quando escrevemos:
 \begin{lstlisting}
@@ -29,7 +29,7 @@ Considere o seguinte:
 	int meu_array[] = {1,23,17,4,-5,100};
 \end{lstlisting}
 
-Aqui temos um array contendo 6 inteiros. Referimo-nos a cada um desses inteiros por meio de um subscrito para \textbf{meu\_array}, ou seja, usando \textbf{my\_array[0]} por meio de \textbf{my\_array[5]}. Mas, podemos acessá-los alternativamente por meio de um ponteiro da seguinte maneira:
+Aqui temos um array contendo 6 inteiros. Referimo-nos a cada um desses inteiros por meio de um subscrito para \textbf{meu\_array}, ou seja, usando de \textbf{meu\_array[0]} até \textbf{meu\_array[5]}. Mas, podemos acessá-los alternativamente por meio de um ponteiro da seguinte maneira:
 
 \begin{lstlisting}
 	int *ptr;
@@ -39,9 +39,22 @@ Aqui temos um array contendo 6 inteiros. Referimo-nos a cada um desses inteiros 
 
 E então poderíamos imprimir nosso array usando a notação de array ou desreferenciando nosso ponteiro. O código a seguir ilustra isso:
 
-\lstinputlisting[caption=Ponteiros e arrays]{code/prog2-1.c}
+\lstinputlisting[caption=Ponteiros e arrays, numbers=left]{code/prog2-1.c}
 
-Compile e execute o programa acima e observe cuidadosamente as linhas A e B e que o programa imprime os mesmos valores em ambos os casos. Observe também como desreferenciamos nosso ponteiro na linha B, ou seja, primeiro adicionamos \textbf{i} a ele e, em seguida, desreferenciamos o novo ponteiro. Mude a linha B para:
+Compile e execute o programa acima e observe cuidadosamente as linhas A e B e que o programa imprime os mesmos valores em ambos os casos. Observe também como desreferenciamos nosso ponteiro na linha B, ou seja, primeiro adicionamos \textbf{i} a ele e, em seguida, desreferenciamos o novo ponteiro.
+Se você digitou o programa corretamente, sua sáida deve ser algo como:
+\lstconsolestyle
+\begin{lstlisting}
+meu_array[0] = 1	ptr + 0 = 1
+meu_array[1] = 23	ptr + 1 = 23
+meu_array[2] = 17	ptr + 2 = 17
+meu_array[3] = 4	ptr + 3 = 4
+meu_array[4] = -5	ptr + 4 = -5
+meu_array[5] = 100	ptr + 5 = 100
+\end{lstlisting}
+\lstcodestyle
+
+Mude a linha B para:
 \begin{lstlisting}
 	printf("ptr + %d = %d\n",i, *ptr++);
 \end{lstlisting}
@@ -51,7 +64,7 @@ e execute-o novamente ... depois mude para:
 \end{lstlisting}
 e tente mais uma vez. A cada vez, tente prever o resultado e observe cuidadosamente o resultado real.
 
-Em C, o padrão afirma que onde quer que possamos usar \textbf{\&var\_name[0]}, podemos substituir isso por \textbf{var\_name}, portanto, em nosso código onde escrevemos:
+Em C, o padrão afirma que onde quer que possamos usar \textbf{\&var\_nome[0]}, podemos substituir isso por \textbf{var\_nome}, portanto, em nosso código onde escrevemos:
 \begin{lstlisting}
 	ptr = &meu_array[0];
 \end{lstlisting}
@@ -65,12 +78,21 @@ Isso leva muitos textos a afirmar que o nome de um array é um ponteiro. Eu pref
 \begin{lstlisting}
 	ptr = meu_array;
 \end{lstlisting}
-não podemos escrever
+mas não podemos escrever
 \begin{lstlisting}
 	meu_array = ptr;
 \end{lstlisting}
 
 O motivo é que, embora \textbf{ptr} seja uma variável, \textbf{meu\_array} é uma constante. Ou seja, o local em que o primeiro elemento de \textbf{meu\_array} será armazenado não pode ser alterado depois que \textbf{meu\_array[]} for declarado.
+
+A Figura \ref{fig:pontarrays} mostra uma possível configuração dessas variáveis.
+\begin{figure}[ht]
+	\begin{center}
+		\input{Pictures/memoria-array.tex}
+		\caption{Ponteiros e arrays.}
+		\label{fig:pontarrays}
+	\end{center}
+\end{figure}
 
 Anteriormente, ao discutir o termo ``lvalue'', citei K\&R-2, onde afirmava:
 
@@ -108,7 +130,7 @@ ele simplesmente usa esse endereço como uma constante no segmento de código e 
 
 Este pode ser um bom lugar para explicar melhor o uso da expressão \textbf{(void *)} usada no Programa \ref{prog1-1} do Capítulo 1. Como vimos, podemos ter ponteiros de vários tipos. Até agora, discutimos ponteiros para inteiros e ponteiros para caracteres. Nos próximos capítulos, aprenderemos sobre ponteiros para estruturas e até mesmo ponteiros para ponteiros.
 
-Também aprendemos que em diferentes sistemas o tamanho de um ponteiro pode variar. Acontece que também é possível que o tamanho de um ponteiro possa variar dependendo do tipo de dados do objeto para o qual ele aponta. Assim, como acontece com inteiros onde você pode ter problemas ao tentar atribuir um inteiro longo a uma variável do tipo inteiro curto, você pode ter problemas ao tentar atribuir os valores de ponteiros de vários tipos a variáveis de ponteiro de outros tipos.
+Também aprendemos que em diferentes sistemas o tamanho de um ponteiro pode variar. Acontece que também é possível que o tamanho de um ponteiro possa variar dependendo do tipo de dados do objeto para o qual ele aponta. Assim, como acontece com inteiros nos quais você pode ter problemas ao tentar atribuir um inteiro longo a uma variável do tipo inteiro curto, você pode ter problemas ao tentar atribuir os valores de ponteiros de vários tipos a variáveis de ponteiro de outros tipos.
 
 Para minimizar esse problema, C fornece um ponteiro do tipo \textbf{void}. Podemos declarar tal ponteiro escrevendo:
 \begin{lstlisting}
