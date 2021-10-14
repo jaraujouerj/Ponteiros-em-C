@@ -10,6 +10,6 @@ O código-fonte em Latex também está disponível aqui neste site.
 
 O arquivo pdf está disponível em meu site: http://www.araujo.eng.uerj.br
 
-Se você for usar esta tradução em algum curso, seria gentil me comunicar, para valorizar meu trabalho e saber que está sendo úti me estimula a fazer outros trabalhos deste mesmo tipo.
+Se você for usar esta tradução em algum curso, seria gentil me comunicar, para valorizar meu trabalho e saber que está sendo útil me estimula a fazer outros trabalhos deste mesmo tipo.
 
 João Araujo
