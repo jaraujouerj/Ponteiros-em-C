@@ -1,0 +1,63 @@
+\chapterimage{carbonated-water-device} % Chapter heading image
+
+\chapter{Mais sobre Strings}
+Bem, nós progredimos bastante em pouco tempo! Vamos recuar um pouco e ver o que foi feito no Capítulo 3 sobre cópia de strings, mas sob uma luz diferente. Considere a seguinte função:
+\lstinputlisting[label=prog:meustrcpy4, caption= meu\_strcpy() com arrays, numbers=left, lastline=11]{code/prog4-1.c}
+
+Lembre-se de que as strings são \textit{arrays} de caracteres. Aqui, escolhemos usar a notação de \textit{array} em vez da notação de ponteiro para fazer a cópia real. Os resultados são os mesmos, ou seja, a string é copiada usando essa notação com a mesma precisão de antes. Isso levanta alguns pontos interessantes que discutiremos.
+
+Como os parâmetros são passados por valor, tanto na passagem de um ponteiro de caractere quanto no nome do \textit{array} como acima, o que realmente é passado é o endereço do primeiro elemento de cada \textit{array}. Assim, o valor numérico do parâmetro passado é o mesmo se usarmos um ponteiro de caractere ou um nome de \textit{array} como parâmetro. Isso tenderia a implicar que de alguma forma \textbf{fonte[i]} é o mesmo que \textbf{*(p + i)}.
+
+De fato, isso é verdade, ou seja, sempre que alguém escreve um \textbf{a[i]}, ele pode ser substituído por \textbf{*(a + i)} sem problemas. Na verdade, o compilador criará o mesmo código em ambos os casos. Portanto, vemos que a aritmética de ponteiro é a mesma coisa que a indexação de \textit{array}. Qualquer sintaxe produz o mesmo resultado.
+
+Isso NÃO quer dizer que ponteiros e \textit{arrays} sejam a mesma coisa, eles não são. Estamos apenas dizendo que, para identificar um determinado elemento de um \textit{array}, temos a opção de duas sintaxes, uma usando indexação de \textit{array} e a outra usando aritmética de ponteiros, que produzem resultados idênticos.
+
+Agora, olhando para esta última expressão, parte dela ... \textbf{(a + i)}, é uma adição simples usando o operador \textbf{+} e as regras de C afirmam que tal expressão é comutativa. Ou seja, \textbf{(a + i)} é idêntico a \textbf{(i + a)}. Assim, poderíamos escrever \textbf{*(i + a)} tão facilmente quanto \textbf{*(a + i)}.
+
+Mas \textbf{*(i + a)} poderia ter vindo de \textbf{i[a]}! De tudo isso vem a curiosa verdade que se:
+\begin{lstlisting}
+	char a[20];
+	int i;
+\end{lstlisting}
+escrever
+\begin{lstlisting}
+	a[3] = 'x';
+\end{lstlisting}
+é o mesmo que escrever
+\begin{lstlisting}
+	3[a] = 'x'
+\end{lstlisting}
+
+Tente! Configure um array de caracteres, inteiros ou longos, etc. e atribua ao terceiro ou quarto elemento um valor usando a abordagem convencional e, em seguida, imprima esse valor para ter certeza de que está funcionando. Em seguida, inverta a notação do \textit{array} como fiz acima. Um bom compilador não hesitará e os resultados serão idênticos. Uma curiosidade ... nada mais!
+
+Agora, olhando para a nossa função, quando escrevemos:
+\begin{lstlisting}
+	dest[i] = fonte[i];
+\end{lstlisting}
+devido ao fato de que a indexação de \textit{array} e a aritmética de ponteiro produzem resultados idênticos, podemos escrever isso como:
+\begin{lstlisting}
+	*(dest + i) = *(fonte + i);
+\end{lstlisting}
+
+Mas, isso faz 2 adições para cada valor assumido por i. As adições, em geral, levam mais tempo do que as incrementações (como aquelas feitas usando o operador \textbf{++} como em \textbf{i++}). Isso pode não ser verdade em compiladores de otimização modernos, mas nunca se pode ter certeza. Portanto, a versão do ponteiro pode ser um pouco mais rápida do que a versão do \textit{array}.
+
+Outra forma de acelerar a versão do ponteiro seria alterar:
+\begin{lstlisting}
+	while (*fonte != '\0')
+\end{lstlisting}
+para simplesmente
+\begin{lstlisting}
+	while (*fonte)
+\end{lstlisting}
+já que o valor entre parênteses irá para zero (FALSO) ao mesmo tempo em ambos os casos.
+
+Neste ponto, você pode querer experimentar um pouco escrevendo alguns de seus próprios programas usando ponteiros. Manipulação strings é um bom lugar para experimentar. Você pode querer escrever suas próprias versões de funções padrão como:
+\begin{lstlisting}
+	strlen();
+	strcat();
+	strchr();
+\end{lstlisting}
+e quaisquer outras que você possa ter em seu sistema.
+
+Voltaremos às strings e sua manipulação por meio de ponteiros em um capítulo futuro. Por enquanto, vamos prosseguir e discutir um pouco as estruturas.
+

@@ -1,19 +1,28 @@
-\chapterimage{chapter_head_2.pdf} % Chapter heading image
+\chapterimage{champagne-cross-section-2.jpg} % Chapter heading image
 
 \chapter{O que é um Ponteiro?}
-Uma daquelas coisas que os iniciantes em C acham difícil é o conceito de ponteiros. O objetivo deste tutorial é fornecer uma introdução aos ponteiros e seu uso para esses iniciantes.
+\lstcodestyle
+Uma daquelas coisas que os iniciantes em C acham difícil é o conceito de ponteiros. O objetivo deste texto é fornecer uma introdução aos ponteiros e seu uso para esses iniciantes.
 
 Eu descobri que muitas vezes o principal motivo pelo qual os iniciantes têm problemas com ponteiros é que eles têm uma percepção fraca ou mínima das variáveis (como são usadas em C). Assim, começamos com uma discussão das variáveis C em geral.
 
-Uma variável em um programa é algo com um nome, cujo valor pode variar. A maneira como o compilador e o \textit{linker} lidam com isso é que ele atribui um bloco específico de memória dentro do computador para armazenar o valor daquela variável. O tamanho desse bloco depende do intervalo no qual a variável pode variar. Por exemplo, em PCs, o tamanho de uma variável inteira é de 4 bytes e o de um inteiro longo é de 8 bytes. Em C, o tamanho de um tipo de variável, como um inteiro, não precisa ser o mesmo em todos os tipos de máquinas.
+Uma \textbf{variável} em um programa é algo com um nome, cujo valor pode variar. A maneira como o compilador e o \textit{linker} lidam com isso é que ele atribui um bloco específico de memória dentro do computador para armazenar o valor daquela variável. O tamanho desse bloco depende do intervalo no qual a variável pode variar. Por exemplo, em PCs, o tamanho de uma variável inteira é de 4 bytes e o de um inteiro longo é de 8 bytes. Em C, o tamanho de um tipo de variável, como um inteiro, não precisa ser o mesmo em todos os tipos de máquinas.
 
-Quando declaramos uma variável, informamos ao compilador duas coisas, o nome da variável e o tipo da variável. Por exemplo, declaramos uma variável do tipo inteiro com o nome k escrevendo:
+Quando declaramos uma variável, informamos ao compilador duas coisas, o nome da variável e o tipo da variável. Por exemplo, declaramos uma variável do tipo inteiro com o nome \textit{k} escrevendo:
+
+\begin{lstlisting}
+	int k;
+\end{lstlisting}
+
+Ao ver a parte ``int'' dessa instrução, o compilador reserva 4 bytes de memória (em um PC de 32 bits) para armazenar o valor do inteiro. Também configura uma tabela de símbolos. Nessa tabela, ele adiciona o símbolo \textit{k} e o endereço relativo na memória onde esses 4 bytes foram reservados.
+
+Então, se mais tarde escrevermos:
 \begin{lstlisting}
 	k = 2;
 \end{lstlisting}
 esperamos que, em tempo de execução quando esta instrução for executada, o valor 2 seja colocado naquele local de memória reservado para o armazenamento do valor de \textbf{k}. Em C, nos referimos a uma variável como o inteiro \textbf{k} como um ``objeto''.
 
-Em certo sentido, existem dois `valores'' associados ao objeto \textbf{k}. Um é o valor do número inteiro armazenado lá (2 no exemplo acima) e o outro é o ``valor'' da localização da memória, ou seja, o endereço de \textbf{k}. Alguns textos referem-se a esses dois valores com a nomenclatura \textbf{\textit{rvalue}} (valor à direita, pronunciado ``err value'') e \textbf{\textit{lvalue}} (valor à esquerda, pronunciado ``el value''), respectivamente.
+Em certo sentido, existem dois `valores'' associados ao objeto \textbf{k}. Um é o valor do número inteiro armazenado lá (2 no exemplo acima) e o outro é o ``valor'' da localização da memória, ou seja, o endereço de \textbf{k}. Alguns textos referem-se a esses dois valores com a nomenclatura \textbf{\textit{rvalue}} (valor à direita, pronunciado ``ar value'') e \textbf{\textit{lvalue}} (valor à esquerda, pronunciado ``el value''), respectivamente.
 
 Em alguns linguagens, o \textit{lvalue} é o valor permitido no lado esquerdo do operador de atribuição `=' (ou seja, o endereço onde termina o resultado da avaliação do lado direito). O \textit{rvalue} é aquele que está no lado direito da instrução de atribuição, o 2 acima. \textit{Rvalues} não podem ser usados no lado esquerdo da instrução de atribuição. Assim: \textbf{2 = k}; é ilegal.
 
@@ -27,15 +36,15 @@ No entanto, neste ponto, a definição originalmente citada acima é suficiente.
 
 Ok, agora considere:
 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left, numberstyle=\tiny]
 	int j, k;
-	
+
 	k = 2;
-	j = 7; <-- linha 1
-	k = j;<-- linha 2
+	j = 7; (*@\label{linha1}@*)
+	k = j; (*@\label{linha2}@*)
 \end{lstlisting}
 
-Acima, o compilador interpreta o \textbf{j} na linha 1 como o endereço da variável \textbf{j} (seu \textit{lvalue}) e cria o código para copiar o valor 7 para esse endereço. Na linha 2, entretanto, \textbf{j} é interpretado como seu \textit{rvalue} (uma vez que está no lado direito do operador de atribuição '='). Ou seja, aqui \textbf{j} se refere ao valor armazenado no local da memória reservado para \textbf{j}, neste caso 7. Assim, o 7 é copiado para o endereço designado pelo \textit{lvalor} de \textbf{k}.
+Acima, o compilador interpreta o \textbf{j} na linha \ref{linha1} como o endereço da variável \textbf{j} (seu \textit{lvalue}) e cria o código para copiar o valor 7 para esse endereço. Na linha \ref{linha2}, entretanto, \textbf{j} é interpretado como seu \textit{rvalue} (uma vez que está no lado direito do operador de atribuição '='). Ou seja, aqui \textbf{j} se refere ao valor armazenado no local da memória reservado para \textbf{j}, neste caso 7. Assim, o 7 é copiado para o endereço designado pelo \textit{lvalor} de \textbf{k}.
 
 Em todos esses exemplos, estamos usando inteiros de 4 bytes, portanto, todas as cópias de \textit{rvalues} de um local de armazenamento para o outro são feitas copiando 4 bytes. Se estivéssemos usando números inteiros longos, estaríamos copiando 8 bytes.
 
@@ -70,16 +79,36 @@ Da mesma forma, poderíamos escrever:
 \begin{lstlisting}
 	printf("%d\n",*ptr);
 \end{lstlisting}
-para imprimir na tela o valor inteiro armazenado no endereço apontado por \textbf{ptr ;}.
+para imprimir na tela o valor inteiro armazenado no endereço apontado por \textbf{ptr;}.
 
 Uma maneira de ver como tudo isso se encaixa seria executar o programa a seguir e, em seguida, revisar o código e a saída com cuidado.
 
-\lstinputlisting[label={prog1-1}, caption={Variáveis e ponteiros}]{code/prog1-1.c}
+\lstinputlisting[label={prog1-1}, caption={Variáveis e ponteiros}, numbers=left, numberstyle=\tiny, stepnumber=1]{code/prog1-1.c}
 
+Um resultado possível, executando em um computador de 64 bits, seria:
+\lstconsolestyle
+\begin{lstlisting}
+j tem valor 1 e está armazenado em 0x562dcb413018
+k tem valor 2 e está armazenado em 0x562dcb413028
+ptr tem valor 0x562dcb413028 e está armazenado em 0x562dcb413020
+O valor do inteiro apontado por ptr é 2
+\end{lstlisting}
+\lstcodestyle
 \begin{remark}
 	Ainda temos que discutir aqueles aspectos de C que requerem o uso da expressão \textbf{(void *)} usada aqui. Por enquanto, inclua-o em seu código de teste. Explicaremos a razão por trás dessa expressão mais tarde.
 
 \end{remark}
+
+A Figura \ref{enderecos} representa esquematicamente a memória para este arranjo de variáveis. Lembre-se que neste caso estamos trabalhando com um computador de 64 bits, assim os endereços têm 8 bytes. 
+
+\begin{figure}[ht]
+	\begin{center}
+		\input{Pictures/memoria.tex}
+		\caption{Endereços e memória.}
+		\label{fig:esquemamemoria}
+	\end{center}
+\label{enderecos}
+\end{figure}
 
 
 \section*{Para revisar:}
