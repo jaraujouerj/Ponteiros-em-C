@@ -1,3 +1,53 @@
 \chapterimage{metal-turning-lathe} % Chapter heading image
 
 \chapter{Ponteiros e Estruturas}
+Como você deve saber, podemos declarar a forma de um bloco de dados contendo diferentes tipos de dados por meio de uma declaração de estrutura. Por exemplo, um arquivo de pessoal pode conter estruturas que se parecem com:
+\begin{lstlisting}
+	struct tag {
+		char sobrenome[20];
+		char nome[20];
+		int idade;
+		float salario;
+	};
+\end{lstlisting}
+
+Digamos que temos um monte dessas estruturas em um arquivo em disco e queremos ler cada uma e imprimir o nome e o sobrenome de cada uma para que possamos ter uma lista das pessoas em nossos arquivos. As informações restantes não serão impressas. Queremos fazer essa impressão com uma chamada de função e passar para essa função um ponteiro para a estrutura em questão. Para fins de demonstração, usarei apenas uma estrutura por enquanto. Mas perceba que o objetivo é a escrita da função, não a leitura do arquivo que, presumivelmente, sabemos fazer.
+
+Para revisão, lembre-se de que podemos acessar membros da estrutura com o operador ponto como em:
+\lstinputlisting[label={prog5-1}, caption={Estruturas}, numbers=left, numberstyle=\tiny, stepnumber=1]{code/prog5-1.c}
+
+Agora, esta estrutura particular é bastante pequena comparada a muitas usadas em programas C. À estrutura acima, podemos adicionar:
+\begin{lstlisting}
+	data_de_admissao;
+	data_do_ultimo_aumento;
+	ultimo_percentual_de_aumento;
+	telefone_de_emergencia;
+	plano_de_saude;
+	numero_de_previdencia;
+	etc.....
+\end{lstlisting}
+
+Se temos um grande número de funcionários, o que queremos fazer é manipular os dados dessas estruturas por meio de funções. Por exemplo, podemos querer que uma função imprima o nome do funcionário listado em qualquer estrutura passada a ela. Porém, no C original (\textit{Kernighan \& Ritchie}, 1ª Edição) não era possível passar uma estrutura, apenas um ponteiro para uma estrutura poderia ser passado. Desde \textbf{ANSI C}, é permitido passar a estrutura completa. Mas, como nosso objetivo aqui é aprender mais sobre ponteiros, não vamos nos estender nisso.
+
+De qualquer forma, se passarmos a estrutura inteira, isso significa que devemos copiar o conteúdo da estrutura da função que chama para a função que é chamada. Em sistemas que usam pilhas, isso é feito empurrando o conteúdo da estrutura para a pilha. Com grandes estruturas, isso pode ser um problema. No entanto, passar um ponteiro usa uma quantidade mínima de espaço de pilha.
+
+Em qualquer caso, como esta é uma discussão sobre ponteiros, discutiremos como passamos um ponteiro para uma estrutura e então o usamos dentro da função.
+
+Considere o caso descrito, ou seja, queremos uma função que aceite como parâmetro um ponteiro para uma estrutura e de dentro dessa função queremos acessar os membros da estrutura. Por exemplo, queremos imprimir o nome do funcionário em nossa estrutura de exemplo.
+
+Ok, então sabemos que nosso ponteiro irá apontar para uma estrutura declarada usando a \textit{struct tag}. Declaramos tal ponteiro com a declaração:
+\begin{lstlisting}
+	(*st_ptr).idade = 63;
+\end{lstlisting}
+
+Olhe com atenção. Ele diz: substitua o que está entre parênteses pelo que \textbf{st\_ptr} aponta, que é a estrutura \textbf{minha\_struct}. Portanto, é o mesmo que \textbf{minha\_struct.idade}.
+
+No entanto, esta é uma expressão usada com bastante frequência e os designers de C criaram uma sintaxe alternativa com o mesmo significado, que é:
+\begin{lstlisting}
+	st_ptr->idade = 63;
+\end{lstlisting}
+
+Com isso em mente, observe o seguinte programa:
+\lstinputlisting[label={prog5-2}, caption={Ponteiros e Estruturas}, numbers=left, numberstyle=\tiny, stepnumber=1]{code/prog5-2.c}
+
+Novamente, essa é uma grande quantidade de informações para absorver de uma vez. O leitor deve compilar e executar os vários trechos de código e usar um depurador para monitorar coisas como \textbf{minha\_struct} e \textbf{p} enquanto percorre o \textbf{main} e segue o código para dentro da função para ver o que está acontecendo.
