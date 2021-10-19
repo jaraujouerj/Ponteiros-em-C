@@ -8,7 +8,7 @@ Tentei contactar o autor original, mas o site mencionado no livro não responde.
 
 O código-fonte em Latex também está disponível aqui neste site.
 
-O arquivo pdf está disponível em meu site: http://www.araujo.eng.uerj.br/#livros
+O arquivo pdf está disponível em meu site: http://www.araujo.eng.uerj.br/c/ponteiros-em-c.pdf
 
 Se você for usar esta tradução em algum curso, seria gentil me comunicar, para valorizar meu trabalho e saber que está sendo útil me estimula a fazer outros trabalhos deste mesmo tipo.
 
