@@ -1,10 +1,44 @@
 \chapterimage{beaumont-machine} % Chapter heading image
 
 \chapter*{Prefácio}
+Este texto nasceu da necessidade de ensinar ponteiros em C. O tópico de ponteiros sempre foi o grande terror de estudantes iniciais da linguagem de programação C e este tema não era bem esclarecido nos principais livros disponíveis. Apesar do medo dos estudantes, o tema não é complexo, mas exige muita atenção e uma compreensão muito boa sobre o hardware e como funcionam os computadores.
 
-Este documento tem como objetivo apresentar dicas para programadores iniciantes na linguagem de programação C. Ao longo de vários anos lendo e contribuindo para várias conferências sobre C, incluindo as da \textit{FidoNet} e \textit{UseNet}, observei que um grande número de novatos em C parece ter dificuldade em compreender os fundamentos dos indicadores. Portanto, empreendi a tarefa de tentar explicá-los em linguagem simples, com muitos exemplos.
+Sempre pensei em escrever um texto como esse, mas esta tarefa sempre foi deixada para depois, até que me deparei com o excelente texto de \textbf{Ted Jensen}. Felizmente ele colocou o texto em domínio público e assim pude aproveitá-lo sem restrições. No início seria apenas uma tradução, porém a última revisão deste texto foi feita há mais de 20 anos. Na época que Ted escreveu este livro e o disponibilizou gratuitamente, a licença \textit{Creative Commons }estava iniciando. Assim, em vez de distribuir como domínio público, escolhi distribuí-la com uma licença mais moderna que mantém o material disponível para todos e pede apenas uma declaração de atribuição.
 
-A primeira versão deste documento foi colocada em domínio público, assim como esta. Ele foi escolhido por \textit{Bob Stout}, que o incluiu como um arquivo chamado \textbf{PTR-HELP.TXT} em sua coleção amplamente distribuída de \textbf{SNIPPETS}. Desde aquele lançamento original de 1995, adicionei uma quantidade significativa de material e fiz algumas pequenas correções no trabalho original.
+Livros excelentes se perdem por questões de copyright. Os autores perdem o interesse no tema (ou coisa pior) e bons textos não podem ser atualizados para aproveitar os avanços na computação.
+
+Antes de disponibilizá-lo tentei contato com Ted, mas todas as tentativas foram infrutíferas. O site original não funciona mais e o e-mail não responde. A última atualização do site foi em 2003 e em 2018 ele saiu do ar.
+
+De qualquer modo, mesmo sem conseguir contactá-lo, deixo aqui meu profundo agradecimento a Ted pela sua generosidade em distribuir material de alta qualidade. A maior parte do texto aqui apresentado é minha tradução do texto original de Ted.
+
+Fiz algumas adaptações para modernizar o texto. Na primeira versão do livro existia apenas o C ANSI, depois tivemos algumas pequenas modificações na linguagem que tentei incorporar ao texto original de Ted. 
+
+Chegou um momento que deixou de ser apenas uma tradução, mas uma co-autoria, mas mantenho a gratuidade do texto para todos que queiram utilizá-lo. Assim, se você quiser usar este texto, peço apenas a citação deste material
+
+O arquivo fonte em Latex deste texto pode ser obtido em\\ \url{https://github.com/jaraujouerj/Ponteiros-em-C}\\
+e o arquivo em pdf pode ser baixado do meu site pessoal:\\
+\url{http://araujo.eng.uerj.br}
+
+\section*{Sobre mim}
+Meu nome é João Araujo e sou professor do Departamento de Engenharia de Sistemas e Computação da Faculdade de Engenharia da Universidade do Estado do Rio de Janeiro desde 1990. Trabalho há anos ensinando programação principalmente com a linguagem C. Aprendi C ainda estudante, na UFRJ, nos anos 1980, na versão original do livro K\&R e acompanhei a transição de C por todas as suas versões: ANSI, C99 e C11.
+
+\section*{Uso deste Material}
+Tudo aqui contido é liberado sob a licença Creative Commons CC-by-SA. Qualquer pessoa pode copiar ou distribuir este material livremente, desde que siga os parâmetros desta licença. Assim como Ted, `\textit{`a única coisa que peço é que se este material for usado como um auxiliar de ensino em uma aula, eu agradeceria se fosse distribuído na íntegra, ou seja, incluindo todos os capítulos, o prefácio e a introdução. Eu também agradeceria se, em tais circunstâncias, o instrutor de tal classe me deixasse uma nota em um dos endereços abaixo informando-me sobre isso. Escrevi isso com a esperança de que seja útil a outras pessoas e, como não estou pedindo nenhuma remuneração financeira, a única maneira de saber que atingi, pelo menos parcialmente, esse objetivo é por meio do feedback de quem considera este material útil.}'
+
+Instrutor ou não, se este material foi útil para você, me envie uma mensagem em \href{mailto:araujo@eng.uerj.br}{araujo@eng.uerj.br}. Críticas, correções e sugestões também são bem-vindas.
+
+\begin{verbatim}
+João Araujo Ribeiro
+Departamento de Engenahria de Sistemas e Computação
+Faculdade de Engenharia
+Universidade do Estado do Rio de Janeiro
+Outubro de 2021
+\end{verbatim}
+
+\section*{Prefácio original de Ted Jensen}
+Este documento tem como objetivo apresentar dicas para programadores iniciantes na linguagem de programação C. Ao longo de vários anos lendo e contribuindo para várias conferências sobre C, incluindo as da \textit{FidoNet} e \textit{UseNet}, observei que um grande número de novatos em C parece ter dificuldade em compreender os fundamentos dos ponteiros. Portanto, empreendi a tarefa de tentar explicá-los em linguagem simples, com muitos exemplos.
+
+A primeira versão deste documento foi colocada em domínio público. Ele foi escolhido por \textit{Bob Stout}, que o incluiu como um arquivo chamado \textbf{PTR-HELP.TXT} em sua coleção amplamente distribuída de \textbf{SNIPPETS}. Desde aquele lançamento original de 1995, adicionei uma quantidade significativa de material e fiz algumas pequenas correções no trabalho original.
 
 Posteriormente, postei uma versão HTML por volta de 1998 em meu site em:\\
 http://pweb.netcom.com/~tjensen/ptr/cpoint.htm

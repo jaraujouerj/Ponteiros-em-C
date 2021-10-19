@@ -25,6 +25,7 @@
 \usepackage{lipsum} % Inserts dummy text
 
 \usepackage{tikz} % Required for drawing custom shapes
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
 
 \usepackage[portuguese]{babel} % Portuguese language/hyphenation
 \usepackage[utf8]{inputenc} % Required for including letters with accents
@@ -39,6 +40,13 @@
 \definecolor{ocre}{RGB}{243,102,25} % Define the orange color used for highlighting throughout the book
 \definecolor{azul}{RGB}{13,205,224} % minhas cores
 \definecolor{cinza}{RGB}{245,245,245}
+
+\usepackage{xmpincl} %creative commons
+\usepackage[
+type={CC},
+modifier={by-sa},
+version={4.0},
+]{doclicense}
 
 \usepackage{listings}
 %\usepackage{listingsutf8}
@@ -170,13 +178,13 @@
 \titlecontents{chapter}
 	[1.25cm] % Left indentation
 	{\addvspace{12pt}\large\sffamily\bfseries} % Spacing and font options for chapters
-	{\color{azul!60}\contentslabel[\Large\thecontentslabel]{1.25cm}\color{azul}} % Formatting of numbered sections of this type
-	{\color{azul}} % Formatting of numberless sections of this type
-	{\color{azul!60}\normalsize\;\titlerule*[.5pc]{.}\;\thecontentspage} % Formatting of the filler to the right of the heading and the page number
+	{\color{black}\contentslabel[\Large\thecontentslabel]{1.25cm}\color{black}} % Formatting of numbered sections of this type
+	{\color{black}} % Formatting of numberless sections of this type
+	{\color{black}\normalsize\;\titlerule*[.5pc]{.}\;\thecontentspage} % Formatting of the filler to the right of the heading and the page number
 
 % Section text styling
 \titlecontents{section}
-	[1.25cm] % Left indentation
+	[1.45cm] % Left indentation
 	{\addvspace{3pt}\sffamily\bfseries} % Spacing and font options for sections
 	{\contentslabel[\thecontentslabel]{1.25cm}} % Formatting of numbered sections of this type
 	{} % Formatting of numberless sections of this type

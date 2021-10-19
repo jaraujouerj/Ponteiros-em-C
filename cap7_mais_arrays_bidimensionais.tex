@@ -1,0 +1,63 @@
+\chapterimage{beating-washing-engines} % Chapter heading image
+
+\chapter{Mais sobre Arrays Multidimensionais}
+No capítulo anterior, notamos que dado
+\begin{lstlisting}
+	#define LINHAS 5
+	#define COLUNAS 10
+	
+	int multi[LINHAS][COLUNAS];
+\end{lstlisting}
+podemos acessar elementos individuais do \textit{array} \textbf{multi} usando:
+\begin{lstlisting}
+	multi[lin][col]
+\end{lstlisting}
+ou
+\begin{lstlisting}
+	*(*(multi + lin) + col)
+\end{lstlisting}
+
+Para entender mais completamente o que está acontecendo, vamos substituir
+\begin{lstlisting}
+	*(multi + lin)
+\end{lstlisting}
+por \textbf{X}, como em:
+\begin{lstlisting}
+	*(X + col)
+\end{lstlisting}
+
+Agora, a partir disso, vemos que \textbf{X} é como um ponteiro, já que a expressão é desreferenciada e sabemos que \textbf{col} é um inteiro. Aqui, a aritmética usada é de um tipo especial chamado ``aritmética de ponteiro''. Isso significa que, como estamos falando de um \textit{array} de inteiros, o endereço apontado por (ou seja, valor de) \textbf{X + col + 1} deve ser maior do que o endereço \textbf{X + col} por uma quantidade igual a \textbf{sizeof(int)}.
+
+Uma vez que conhecemos o layout da memória para \textit{arrays} bidimensionais, podemos determinar que na expressão \textbf{multi + lin} como usada acima, \textbf{multi + lin + 1} deve aumentar por valor um valor igual ao necessário para ``apontar para'' a próxima linha, que neste caso, seria um valor igual a \textbf{COLUNAS * sizeof(int)}.
+
+Isso significa que se a expressão \textbf{*(*(multi + lin) + col)} deve ser avaliada corretamente em tempo de execução, o compilador deve gerar o código que leva em consideração o valor de \textbf{COLUNAS}, ou seja, a 2ª dimensão. Por causa da equivalência das duas formas de expressão, isso é verdade quer estejamos usando a expressão de ponteiro como aqui ou a expressão de \textit{array} \textbf{multi[linha][col]}.
+
+Assim, para avaliar qualquer uma das expressões, um total de 5 valores deve ser conhecido:
+\begin{enumerate}
+	\item O endereço do primeiro elemento do array, que é retornado pela expressão \textbf{multi}, ou seja, o nome do \textbf{array}.
+	\item O tamanho do tipo dos elementos do \textit{array}, neste caso \textbf{sizeof(int)}.
+	\item A 2ª dimensão do \textit{array}.
+	\item O valor de índice específico para a primeira dimensão, \textbf{lin} neste caso.
+	\item O valor de índice específico para a segunda dimensão, \textbf{col} neste caso.
+\end{enumerate}
+
+Dado tudo isso, considere o problema de projetar uma função para manipular os valores dos elementos de um \textit{array} previamente declarado. Por exemplo, um que definiria todos os elementos do \textit{array} \textbf{multi} para o valor 1.
+
+\begin{lstlisting}
+	void define_valor(int m_array[][COLUNAS])	{
+		for (int lin = 0; lin < LINHAS; lin++){
+			for (int col = 0; col < COLUNAS; col++){
+				m_array[lin][col] = 1;
+			}
+		}
+	}
+\end{lstlisting}
+
+E para chamar essa função, usaríamos:
+\begin{lstlisting}
+	define_valor(multi);
+\end{lstlisting}
+
+Agora, dentro da função, usamos os valores \textit{\#defined} por LINHAS e COLUNAS que definem os limites dos \textit{loops} \textbf{for}. Mas, esses \textit{\#defines} são apenas constantes no que diz respeito ao compilador, ou seja, não há nada que os conecte ao tamanho do \textit{array} dentro da função. \textbf{lin} e \textbf{col} são variáveis locais, é claro. A definição formal do parâmetro permite ao compilador determinar as   características associadas ao valor do ponteiro que será passado em tempo de execução. Realmente não precisamos da primeira dimensão e, como será visto mais tarde, há ocasiões em que preferiríamos não defini-la dentro da definição do parâmetro, por hábito ou consistência, não a usei aqui. Mas, a segunda dimensão deve ser usada como foi mostrado na expressão do parâmetro. A razão é que precisamos disso na avaliação de \textbf{m\_array[lin][col]} como foi descrito. Enquanto o parâmetro define o tipo de dados (\textbf{int} neste caso) e as variáveis automáticas para linha e coluna são definidas nos \textit{loops for}, apenas um valor pode ser passado usando um único parâmetro. Nesse caso, esse é o valor de \textbf{multi} conforme observado na instrução de chamada, ou seja, o endereço do primeiro elemento, muitas vezes referido como um ponteiro para o \textit{array}. Assim, a única forma que temos de informar o compilador da 2ª dimensão é incluindo explicitamente na definição dos parâmetros.
+
+Na verdade, em geral, todas as dimensões de ordem superior à primeira são necessárias ao lidar com \textit{arrays} multidimensionais. Ou seja, se estamos falando de \textit{arrays} tridimensionais, a 2ª e a 3ª dimensões devem ser especificadas na definição do parâmetro.

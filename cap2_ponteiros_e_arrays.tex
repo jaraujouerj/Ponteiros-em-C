@@ -17,12 +17,20 @@ Agora, digamos que apontamos nosso ponteiro de inteiro \textbf{ptr} para o prime
 	ptr + 1;
 \end{lstlisting}
 
-Porque o compilador ``sabe'' que este é um ponteiro (ou seja, seu valor é um endereço) e que aponta para um inteiro (seu endereço atual, 100, é o endereço de um inteiro), ele adiciona 4 a \textbf{ptr} em vez de 1, então o ponteiro ``aponta para'' o \textbf{próximo inteiro}, no local da memória 104. Da mesma forma, se o \textbf{ptr} fosse declarado como um ponteiro para um longo, ele adicionaria 8 a ele em vez de 1.
+\begin{figure}[ht]
+	\begin{center}
+		\input{Pictures/memoriapont.tex}
+		\caption{Array de inteiros, cada posição com 1 byte.}
+		\label{fig:ponteiros}
+	\end{center}
+\end{figure}
+
+Porque o compilador ``sabe'' que este é um ponteiro (ou seja, seu valor é um endereço) e que aponta para um inteiro (seu endereço atual, 100, é o endereço de um inteiro), ele adiciona 4 a \textbf{ptr} em vez de 1, então o ponteiro ``aponta para'' o \textbf{próximo inteiro}, no local da memória 104 (Figura \ref{fig:ponteiros}). Da mesma forma, se o \textbf{ptr} fosse declarado como um ponteiro para um \textit{long}, ele adicionaria 8 a ele em vez de 1.
 O mesmo vale para outros tipos de dados, como floats, doubles ou até mesmo tipos de dados definidos pelo usuário, como estruturas. Obviamente, esse não é o mesmo tipo de ``adição'' em que normalmente pensamos. Em C, é referido como adição usando ``aritmética de ponteiros'', um termo ao qual voltaremos mais tarde.
 
 Da mesma forma, uma vez que \textbf{++ptr} e \textbf{ptr++} são ambos equivalentes a \textbf{ptr + 1} (embora o ponto no programa quando \textbf{ptr} é incrementado possa ser diferente), incrementar um ponteiro usando o operador unário \textbf{++}, seja pré- ou pós-, incrementa o endereço que ele armazena pela quantidade \textit{sizeof(tipo)} onde ``tipo'' é o tipo do objeto apontado. (ou seja, 4 para um número inteiro, 8 para um longo, etc.).
 
-Como um bloco de 10 inteiros localizado contiguamente na memória é, por definição, um array de inteiros, isso traz uma relação interessante entre arrays e ponteiros.
+Como um bloco de 10 inteiros localizado contiguamente na memória é, por definição, um \textit{array} de inteiros, isso traz uma relação interessante entre \textit{arrays} e ponteiros.
 
 Considere o seguinte:
 \begin{lstlisting}
@@ -37,20 +45,20 @@ Aqui temos um array contendo 6 inteiros. Referimo-nos a cada um desses inteiros 
 	                        inteiro em nosso array */
 \end{lstlisting}
 
-E então poderíamos imprimir nosso array usando a notação de array ou desreferenciando nosso ponteiro. O código a seguir ilustra isso:
+E então poderíamos imprimir nosso \textit{array} usando a notação de \textit{array} ou desreferenciando nosso ponteiro. O código a seguir ilustra isso:
 
-\lstinputlisting[caption=Ponteiros e arrays, numbers=left]{code/prog2-1.c}
+\lstinputlisting[label=prog2.1, caption=Ponteiros e arrays, numbers=left]{code/prog2-1.c}
 
-Compile e execute o programa acima e observe cuidadosamente as linhas A e B e que o programa imprime os mesmos valores em ambos os casos. Observe também como desreferenciamos nosso ponteiro na linha B, ou seja, primeiro adicionamos \textbf{i} a ele e, em seguida, desreferenciamos o novo ponteiro.
-Se você digitou o programa corretamente, sua sáida deve ser algo como:
+Compile e execute o programa \ref{prog2.1} e observe cuidadosamente as linhas A e B e que o programa imprime os mesmos valores em ambos os casos. Observe também como desreferenciamos nosso ponteiro na linha B, ou seja, primeiro adicionamos \textbf{i} a ele e, em seguida, desreferenciamos o novo ponteiro.
+Se você digitou o programa corretamente, sua saída deve ser algo como:
 \lstconsolestyle
 \begin{lstlisting}
-meu_array[0] = 1	ptr + 0 = 1
-meu_array[1] = 23	ptr + 1 = 23
-meu_array[2] = 17	ptr + 2 = 17
-meu_array[3] = 4	ptr + 3 = 4
-meu_array[4] = -5	ptr + 4 = -5
-meu_array[5] = 100	ptr + 5 = 100
+meu_array[0] = 1   ptr + 0 = 1
+meu_array[1] = 23  ptr + 1 = 23
+meu_array[2] = 17  ptr + 2 = 17
+meu_array[3] = 4   ptr + 3 = 4
+meu_array[4] = -5  ptr + 4 = -5
+meu_array[5] = 100 ptr + 5 = 100
 \end{lstlisting}
 \lstcodestyle
 
@@ -64,7 +72,7 @@ e execute-o novamente ... depois mude para:
 \end{lstlisting}
 e tente mais uma vez. A cada vez, tente prever o resultado e observe cuidadosamente o resultado real.
 
-Em C, o padrão afirma que onde quer que possamos usar \textbf{\&var\_nome[0]}, podemos substituir isso por \textbf{var\_nome}, portanto, em nosso código onde escrevemos:
+Em C, o padrão afirma que onde quer que possamos usar \textbf{\&var\_nome[0]}, podemos substituir isso por \textbf{var\_nome}, portanto, em nosso código, onde escrevemos:
 \begin{lstlisting}
 	ptr = &meu_array[0];
 \end{lstlisting}
@@ -74,7 +82,7 @@ podemos escrever:
 \end{lstlisting}
 para alcançar o mesmo resultado.
 
-Isso leva muitos textos a afirmar que o nome de um array é um ponteiro. Eu prefiro pensar mentalmente ``o nome do array é o endereço do primeiro elemento no array". Muitos iniciantes (incluindo eu quando estava aprendendo) tendem a ficar confusos pensando nisso como um ponteiro. Por exemplo, enquanto podemos escrever
+Isso leva muitos textos a afirmar que o nome de um \textit{array} é um ponteiro. Eu prefiro pensar mentalmente ``o nome do \textit{array} é o endereço do primeiro elemento no \textit{array}". Muitos iniciantes (incluindo eu quando estava aprendendo) tendem a ficar confusos pensando nisso como um ponteiro. Por exemplo, podemos escrever
 \begin{lstlisting}
 	ptr = meu_array;
 \end{lstlisting}
@@ -128,7 +136,10 @@ Da mesma forma, no exemplo acima, uma vez que \textbf{meu\_array} é uma constan
 \end{lstlisting}
 ele simplesmente usa esse endereço como uma constante no segmento de código e não há referência do segmento de dados além disso.
 
-Este pode ser um bom lugar para explicar melhor o uso da expressão \textbf{(void *)} usada no Programa \ref{prog1-1} do Capítulo 1. Como vimos, podemos ter ponteiros de vários tipos. Até agora, discutimos ponteiros para inteiros e ponteiros para caracteres. Nos próximos capítulos, aprenderemos sobre ponteiros para estruturas e até mesmo ponteiros para ponteiros.
+\section{Expressão (void*)}
+\label{expvoid}
+
+No Programa \ref{prog1-1} do Capítulo 1 usamos a expressão \textbf{(void *)} sem muitas explicações. Vamos detalhar melhor seu uso. Como vimos, podemos ter ponteiros de vários tipos. Até agora, discutimos ponteiros para inteiros e ponteiros para caracteres. Nos próximos capítulos, aprenderemos sobre ponteiros para estruturas e até mesmo ponteiros para ponteiros.
 
 Também aprendemos que em diferentes sistemas o tamanho de um ponteiro pode variar. Acontece que também é possível que o tamanho de um ponteiro possa variar dependendo do tipo de dados do objeto para o qual ele aponta. Assim, como acontece com inteiros nos quais você pode ter problemas ao tentar atribuir um inteiro longo a uma variável do tipo inteiro curto, você pode ter problemas ao tentar atribuir os valores de ponteiros de vários tipos a variáveis de ponteiro de outros tipos.
 

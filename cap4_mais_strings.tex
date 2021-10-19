@@ -12,6 +12,8 @@ De fato, isso é verdade, ou seja, sempre que alguém escreve um \textbf{a[i]}, 
 
 Isso NÃO quer dizer que ponteiros e \textit{arrays} sejam a mesma coisa, eles não são. Estamos apenas dizendo que, para identificar um determinado elemento de um \textit{array}, temos a opção de duas sintaxes, uma usando indexação de \textit{array} e a outra usando aritmética de ponteiros, que produzem resultados idênticos.
 
+\section{O curioso caso de 3[a]}
+
 Agora, olhando para esta última expressão, parte dela ... \textbf{(a + i)}, é uma adição simples usando o operador \textbf{+} e as regras de C afirmam que tal expressão é comutativa. Ou seja, \textbf{(a + i)} é idêntico a \textbf{(i + a)}. Assim, poderíamos escrever \textbf{*(i + a)} tão facilmente quanto \textbf{*(a + i)}.
 
 Mas \textbf{*(i + a)} poderia ter vindo de \textbf{i[a]}! De tudo isso vem a curiosa verdade que se:
@@ -29,6 +31,8 @@ escrever
 \end{lstlisting}
 
 Tente! Configure um array de caracteres, inteiros ou longos, etc. e atribua ao terceiro ou quarto elemento um valor usando a abordagem convencional e, em seguida, imprima esse valor para ter certeza de que está funcionando. Em seguida, inverta a notação do \textit{array} como fiz acima. Um bom compilador não hesitará e os resultados serão idênticos. Uma curiosidade ... nada mais!
+
+\section{Quem é mais rápido?}
 
 Agora, olhando para a nossa função, quando escrevemos:
 \begin{lstlisting}
@@ -51,7 +55,7 @@ para simplesmente
 \end{lstlisting}
 já que o valor entre parênteses irá para zero (FALSO) ao mesmo tempo em ambos os casos.
 
-Neste ponto, você pode querer experimentar um pouco escrevendo alguns de seus próprios programas usando ponteiros. Manipulação strings é um bom lugar para experimentar. Você pode querer escrever suas próprias versões de funções padrão como:
+Neste ponto, você pode querer experimentar um pouco escrevendo alguns de seus próprios programas usando ponteiros. Manipulação strings é um bom lugar para experimentar. Você pode tentar escrever suas próprias versões de funções padrão como:
 \begin{lstlisting}
 	strlen();
 	strcat();

@@ -1,7 +1,7 @@
 \chapterimage{metal-turning-lathe} % Chapter heading image
 
 \chapter{Ponteiros e Estruturas}
-Como você deve saber, podemos declarar a forma de um bloco de dados contendo diferentes tipos de dados por meio de uma declaração de estrutura. Por exemplo, um arquivo de pessoal pode conter estruturas que se parecem com:
+Como você deve saber, podemos declarar um bloco de dados contendo diferentes tipos de dados por meio de uma declaração de estrutura. Por exemplo, um arquivo de pessoal pode conter estruturas que se parecem com:
 \begin{lstlisting}
 	struct tag {
 		char sobrenome[20];
@@ -11,12 +11,12 @@ Como você deve saber, podemos declarar a forma de um bloco de dados contendo di
 	};
 \end{lstlisting}
 
-Digamos que temos um monte dessas estruturas em um arquivo em disco e queremos ler cada uma e imprimir o nome e o sobrenome de cada uma para que possamos ter uma lista das pessoas em nossos arquivos. As informações restantes não serão impressas. Queremos fazer essa impressão com uma chamada de função e passar para essa função um ponteiro para a estrutura em questão. Para fins de demonstração, usarei apenas uma estrutura por enquanto. Mas perceba que o objetivo é a escrita da função, não a leitura do arquivo que, presumivelmente, sabemos fazer.
+Digamos que temos várias dessas estruturas em um arquivo em disco, e queremos ler e imprimir o nome e o sobrenome de cada registro para que possamos ter uma lista das pessoas em nossos arquivos. As informações restantes não serão impressas. Queremos fazer essa impressão com uma chamada de função e passar para essa função um ponteiro para a estrutura em questão. Para fins de demonstração, usarei apenas uma estrutura por enquanto. Mas perceba que o objetivo é a escrita da função, não a leitura do arquivo que, presumivelmente, sabemos fazer.
 
 Para revisão, lembre-se de que podemos acessar membros da estrutura com o operador ponto como em:
 \lstinputlisting[label={prog5-1}, caption={Estruturas}, numbers=left, numberstyle=\tiny, stepnumber=1]{code/prog5-1.c}
 
-Agora, esta estrutura particular é bastante pequena comparada a muitas usadas em programas C. À estrutura acima, podemos adicionar:
+Agora, esta estrutura em particular é bem pequena comparada àquelas normalmente usadas em programas C. À estrutura acima, podemos adicionar:
 \begin{lstlisting}
 	data_de_admissao;
 	data_do_ultimo_aumento;
@@ -29,7 +29,7 @@ Agora, esta estrutura particular é bastante pequena comparada a muitas usadas e
 
 Se temos um grande número de funcionários, o que queremos fazer é manipular os dados dessas estruturas por meio de funções. Por exemplo, podemos querer que uma função imprima o nome do funcionário listado em qualquer estrutura passada a ela. Porém, no C original (\textit{Kernighan \& Ritchie}, 1ª Edição) não era possível passar uma estrutura, apenas um ponteiro para uma estrutura poderia ser passado. Desde \textbf{ANSI C}, é permitido passar a estrutura completa. Mas, como nosso objetivo aqui é aprender mais sobre ponteiros, não vamos nos estender nisso.
 
-De qualquer forma, se passarmos a estrutura inteira, isso significa que devemos copiar o conteúdo da estrutura da função que chama para a função que é chamada. Em sistemas que usam pilhas, isso é feito empurrando o conteúdo da estrutura para a pilha. Com grandes estruturas, isso pode ser um problema. No entanto, passar um ponteiro usa uma quantidade mínima de espaço de pilha.
+De qualquer forma, se passarmos a estrutura inteira, isso significa que devemos copiar o conteúdo da estrutura da função que chama para a função que é chamada. Em sistemas que usam pilhas, isso é feito fazendo um \textit{push} do conteúdo da estrutura para a pilha. Com grandes estruturas, isso pode ser um problema. No entanto, passar um ponteiro usa uma quantidade mínima de espaço de pilha.
 
 Em qualquer caso, como esta é uma discussão sobre ponteiros, discutiremos como passamos um ponteiro para uma estrutura e então o usamos dentro da função.
 

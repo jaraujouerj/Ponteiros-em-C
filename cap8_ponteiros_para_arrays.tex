@@ -1,0 +1,65 @@
+\chapterimage{scott-printing-press} % Chapter heading image
+
+\chapter{Ponteiros para Arrays}
+Os ponteiros, é claro, podem ser ``apontados para'' qualquer tipo de objeto de dados, incluindo \textit{arrays}. Embora isso tenha ficado evidente quando discutimos o Programa \ref{prog:strings}, é importante expandir como fazemos isso quando se trata de \textit{arrays} multidimensionais.
+
+Para revisar, no Capítulo 2, afirmamos que, dado um \textit{array} de inteiros, poderíamos apontar um ponteiro de inteiro para esse \textit{array} usando:
+\begin{lstlisting}
+	int *ptr;
+	ptr = &meu_array[0]; // Aponta nosso ponteiro para o 
+	                     // primeiro inteiro de nosso array
+\end{lstlisting}
+
+Como afirmamos lá, o tipo da variável de ponteiro deve corresponder ao tipo do primeiro elemento do \textit{array}.
+
+Além disso, podemos usar um ponteiro como um parâmetro formal de uma função projetada para manipular um \textit{array}. por exemplo.
+
+Dado:
+\begin{lstlisting}
+	int array[3] = {'1', '5', '7'};
+	void uma_func(int *p);
+\end{lstlisting}
+
+Alguns programadores podem preferir escrever o protótipo da função como:
+\begin{lstlisting}
+	void uma_func(int p[]);
+\end{lstlisting}
+que tenderia a informar outras pessoas que poderiam usar esta função que a função foi projetada para manipular os elementos de um \textit{array}. Obviamente, em ambos os casos, o que realmente é passado é o valor de um ponteiro para o primeiro elemento do \textit{array}, independente de qual notação é usada no protótipo ou definição da função. Observe que, se a notação de \textit{array} for usada, não há necessidade de passar a dimensão real do \textit{array}, pois não estamos passando o \textit{array} inteiro, apenas o endereço do primeiro elemento.
+
+Agora nos voltamos para o problema do \textit{array} bidimensional. Conforme declarado no último capítulo, C interpreta um \textit{array} bidimensional como um \textit{array} de \textit{arrays} unidimensionais. Sendo esse o caso, o primeiro elemento de um \textit{array} bidimensional de inteiros é um \textit{array} unidimensional de inteiros. E um ponteiro para um \textit{array} bidimensional de inteiros deve ser um ponteiro para esse tipo de dados. Uma forma de o conseguir é através da utilização da palavra-chave ``\textbf{typedef}''. \textbf{typedef} atribui um novo nome a um tipo de dados especificado. Por exemplo:
+\begin{lstlisting}
+	typedef unsigned char byte;
+\end{lstlisting}
+faz com que o nome \textbf{byte} signifique o tipo \textbf{unsigned char}. Portanto
+\begin{lstlisting}
+	byte b[10];
+\end{lstlisting}
+seria um \textit{array} de caracteres sem sinal.
+
+Observe que na declaração de \textbf{typedef}, a palavra \textit{byte} substituiu o que normalmente seria o nome de nosso \textbf{unsigned char}. Ou seja, a regra para usar \textbf{typedef} é que o novo nome para o tipo de dados seja o nome usado na definição do tipo de dados. Assim em:
+\begin{lstlisting}
+	typedef int Array[10];
+\end{lstlisting}
+\textbf{Array} se torna um tipo de dados para um \textit{array} de 10 inteiros. ou seja, \textbf{Array meu\_arr;} declara \textbf{meu\_arr} como um \textit{array} de 10 inteiros e \textbf{Array arr2d[5];} torna \textbf{arr2d} um \textit{array} de 5 \textit{arrays} de 10 inteiros cada.
+
+Observe também que \textbf{Array *p1d;} torna \textbf{p1d} um ponteiro para um \textit{array} de 10 inteiros. Como \textbf{*p1d} aponta para o mesmo tipo que \textbf{arr2d}, atribuir o endereço do \textit{array} bidimensional \textbf{arr2d} a \textbf{p1d}, o ponteiro para um \textit{array} unidimensional de 10 inteiros é aceitável. ou seja, 
+\begin{lstlisting}
+	p1d = &arr2d[0];
+\end{lstlisting}
+ou
+\begin{lstlisting}
+	p1d = arr2d;
+\end{lstlisting}
+estão ambos corretos.
+
+Como o tipo de dados que usamos para nosso ponteiro é um \textit{array} de 10 inteiros, esperaríamos que incrementar \textbf{p1d} em 1 mudaria seu valor em \textbf{10 * sizeof(int)}, o que realmente acontece. Ou seja, \textbf{sizeof(*p1d)} é 40 (em um computador com  inteiros de 4 bytes). Você pode provar isso para si mesmo escrevendo e executando um programa curto simples.
+
+Agora, embora o uso de \textbf{typedef} torne as coisas mais claras para o leitor e mais fáceis para o programador, não é realmente necessário. O que precisamos é uma maneira de declarar um ponteiro como \textbf{p1d} sem a necessidade da palavra-chave \textbf{typedef}. Acontece que isso pode ser feito e que
+\begin{lstlisting}
+	int (*p1d)[10];
+\end{lstlisting}
+é a declaração apropriada, ou seja, \textbf{p1d} aqui é um ponteiro para um \textit{array} de 10 inteiros, exatamente como estava na declaração usando o tipo \textbf{Array}. Observe que isso é diferente de
+\begin{lstlisting}
+	int *p1d[10];
+\end{lstlisting}
+o que tornaria \textbf{p1d} o nome de um \textit{array} de 10 ponteiros para o tipo \textbf{int}.

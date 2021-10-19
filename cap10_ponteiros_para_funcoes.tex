@@ -1,0 +1,67 @@
+\chapterimage{marinoni-printing-press1} % Chapter heading image
+
+\chapter{Ponteiros para Funções}
+Até este ponto, discutimos ponteiros para objetos de dados. C também permite a declaração de ponteiros para funções. Os ponteiros para funções têm diversos usos e alguns deles serão discutidos aqui.
+
+Considere o seguinte problema real. Você deseja escrever uma função que seja capaz de ordenar virtualmente qualquer coleção de dados que possa ser armazenada em um \textit{array}. Isso pode ser um \textit{array} de strings, inteiros, pontos flutuantes, ou mesmo estruturas. O algoritmo de classificação pode ser o mesmo para todos. Por exemplo, pode ser um algoritmo de classificação de bolha simples, ou algoritmos mais complexos como o \textit{shellsort} ou o \textit{quicksort}. Usaremos uma ordenação pelo método da bolha simples, para fins de demonstração.
+
+Sedgewick \cite{sedgewick} descreveu a classificação por bolhas usando código C, configurando uma função que, quando passada por um ponteiro para o \textit{array}, iria ordená-lo. Se chamarmos essa função \textbf{bubble()}, um programa de classificação é descrito por \textbf{bubble\_1.c}, que se segue:
+\lstinputlisting[label=prog:bubble1, caption=bubble\_1.c, numbers=left]{code/bubble_1.c}
+
+A ordenação pelo método da bolha é um dos tipos mais simples. O algoritmo varre o \textit{array} do segundo ao último elemento, comparando cada elemento com o que o precede. Se aquele que o precede for maior que o elemento atual, os dois serão trocados de forma que o maior fique mais próximo do final do \textit{array}. Na primeira passagem, isso resulta no maior elemento terminando no final do \textit{array}. O \textit{array} agora está limitado a todos os elementos, exceto o último e o processo repetido. Isso coloca o próximo maior elemento em um ponto que precede o maior elemento. O processo é repetido por um número de vezes igual ao número de elementos menos 1. O resultado final é um \textit{array} ordenado.
+
+Aqui, nossa função é projetada para classificar um \textit{array} de inteiros. Portanto, na linha 27 estamos comparando inteiros e nas linhas 28 a 30 estamos usando armazenamento temporário de inteiros para armazenar inteiros. O que queremos fazer agora é ver se podemos converter esse código para que possamos usar qualquer tipo de dados, ou seja, não ficar restrito a inteiros.
+
+Ao mesmo tempo, não queremos ter que analisar nosso algoritmo e o código associado a ele cada vez que o usarmos. Começamos removendo a comparação de dentro da função \textbf{bubble()} para tornar relativamente fácil modificar a função de comparação sem ter que reescrever partes relacionadas ao algoritmo real. Isso resulta em\textbf{ bubble\_2.c} (Programa \ref{prog:bubble2}):
+\lstinputlisting[label=prog:bubble2, caption=bubble\_2.c, numbers=left]{code/bubble_2.c}
+
+Se nosso objetivo é tornar nossa função de ordenação independente do tipo de dados, uma maneira de fazer isso é usar ponteiros para o tipo \textit{void} para apontar para os dados em vez de usar o tipo de dados inteiro. Para começar nessa direção, vamos modificar algumas coisas para que os ponteiros possam ser usados. Para começar, usaremos ponteiros para o tipo inteiro (Programa \ref{prog:bubble3}).
+
+\lstinputlisting[label=prog:bubble3, caption=bubble\_3.c, numbers=left]{code/bubble_3.c}
+
+Observe as mudanças. Agora estamos passando um ponteiro para um inteiro (ou array de inteiros) para \textbf{bubble()}. E de dentro de \textit{bubble} estamos passando ponteiros para os elementos do array que queremos comparar com nossa função de comparação. E, é claro, estamos desreferenciando esses ponteiros em nossa função \textbf{compare()} para fazer a comparação real. Nossa próxima etapa será converter os ponteiros em \textbf{bubble()} em ponteiros para o tipo \textit{void}, de modo que a função se torne mais insensível ao tipo. Isso é mostrado em bubble\_4 (Programa \ref{prog:bubble4}).
+
+\lstinputlisting[label=prog:bubble4, caption=bubble\_4.c, numbers=left]{code/bubble_4.c}
+
+Observe que, ao fazer isso, em \textbf{compare()} tivemos que introduzir a conversão dos tipos de ponteiro \textit{void} passados para o tipo real que está sendo classificado. Mas, como veremos mais tarde, está tudo bem. E como o que está sendo passado para \textbf{bubble()} ainda é um ponteiro para um \textit{array} de inteiros, tivemos que converter esses ponteiros para ponteiros nulos quando os passamos como parâmetros em nossa chamada para \textbf{compare()}.
+
+Agora abordamos o problema do que passamos para \textbf{bubble()}. Queremos tornar o primeiro parâmetro dessa função um ponteiro \textit{void} também. Mas, isso significa que dentro de \textbf{bubble()} precisamos fazer algo sobre a variável \textbf{t}, que atualmente é um inteiro. Além disso, onde usamos \textbf{t = p [j-1];} o tipo de \textbf{p[j-1]} precisa ser conhecido para saber quantos bytes copiar para a variável \textbf{t} (ou o que quer que substituamos \textbf{t}).
+
+Atualmente, em \textbf{bubble\_4.c}, o conhecimento em \textbf{bubble()} quanto ao tipo de dados sendo classificados (e, portanto, o tamanho de cada elemento individual) é obtido do fato de que o primeiro parâmetro é um ponteiro para o tipo inteiro. Se quisermos usar \textbf{bubble()} para classificar qualquer tipo de dados, precisamos fazer desse ponteiro um ponteiro para o tipo \textit{void}. Mas, ao fazer isso, perderemos informações sobre o tamanho dos elementos individuais dentro do \textit{array}. Portanto, em \textbf{bubble\_5.c} adicionaremos um parâmetro separado para lidar com essas informações de tamanho.
+
+Essas mudanças, de \textbf{bubble\_4.c} para \textbf{bubble\_5.c} (Programa \ref{prog:bubble5}), são, talvez, um pouco mais extensas do que as que fizemos no passado. Portanto, compare os dois módulos cuidadosamente para verificar as diferenças.
+
+\lstinputlisting[label=prog:bubble5, caption=bubble\_5.c, numbers=left]{code/bubble_5.c}
+
+Observe que alterei o tipo de dados do \textit{array} de \textbf{int} para \textbf{long} para ilustrar as alterações necessárias na função \textbf{compare()}. Em \textbf{bubble()}, eliminei a variável \textbf{t} (que teríamos que mudar do tipo \textit{int} para o tipo \textit{long}). Eu adicionei um \textit{buffer} de tamanho 8 caracteres não sinalizados, que é o tamanho necessário para conter um \textit{long} (isso mudará novamente em futuras atualizações neste código). O ponteiro de caracteres não sinalizados \textbf{*bp} é usado para apontar para a base do \textit{array} a ser ordenado, ou seja, para o primeiro elemento desse \textit{array}.
+
+Também tivemos que modificar o que passamos para \textbf{compare()} e como fazemos a troca de elementos que a comparação indica que precisam ser trocados. O uso de \textbf{memcpy()} e notação de ponteiro em vez de notação de array contribui para essa redução na sensibilidade do tipo.
+
+Novamente, fazer uma comparação cuidadosa de \textbf{bubble\_5.c} com \textbf{bubble\_4.c} pode resultar em uma melhor compreensão do que está acontecendo e por quê.
+
+Vamos agora para \textbf{bubble\_6.c} (Programa \ref{prog:bubble6}), onde usamos a mesma função \textbf{bubble()} que usamos em \textbf{bubble\_5.c} para classificar strings em vez de inteiros longos. É claro que temos que mudar a função de comparação, pois o meio pelo qual as strings são comparadas é diferente daquele pelo qual inteiros longos são comparados. E, em \textbf{bubble\_6.c}, excluímos as linhas dentro de \textbf{bubble()} que foram comentadas em \textbf{bubble\_5.c}.
+
+\lstinputlisting[label=prog:bubble6, caption=bubble\_6.c, numbers=left]{code/bubble_6.c}
+
+Mas, o fato de \textbf{bubble()} não ter sido alterado em relação ao usado em \textbf{bubble\_5.c} indica que essa função é capaz de classificar uma ampla variedade de tipos de dados. O que falta fazer é passar para \textbf{bubble()} o nome da função de comparação que queremos usar para que possa ser verdadeiramente universal. Assim como o nome de um \textit{array} é o endereço do primeiro elemento do \textit{array} no segmento de dados, o nome de uma função indica o endereço dessa função no segmento de código. Portanto, precisamos usar um ponteiro para uma função. Neste caso, a função de comparação.
+
+Os ponteiros para funções devem corresponder às funções apontadas no número e nos tipos dos parâmetros e no tipo do valor de retorno. Em nosso caso, declaramos nosso ponteiro de função como:
+\begin{lstlisting}
+	int (*fptr)(const void *p1, const void *p2);
+\end{lstlisting}
+
+Observe que se tivéssemos escrito:
+\begin{lstlisting}
+	int *fptr(const void *p1, const void *p2)
+\end{lstlisting}
+teríamos um protótipo de função para uma função que retornasse um ponteiro para o tipo \textbf{int}. Isso ocorre porque em C o operador parênteses () tem uma precedência mais alta do que o operador ponteiro *. Colocando o parêntese ao redor da string \textbf{(* fptr)}, indicamos que estamos declarando um ponteiro de função.
+
+Agora modificamos nossa declaração de \textbf{bubble()} adicionando, como seu quarto parâmetro, um ponteiro de função do tipo apropriado. Seu protótipo de função torna-se:
+\begin{lstlisting}
+	void bubble(void *p, int tamanho, int n, 
+		          int(*fptr)(const void *, const void *));
+\end{lstlisting}
+
+Quando chamamos \textbf{bubble()}, inserimos o nome da função de comparação que queremos usar. \textbf{bubble\_7.c} (Programa \ref{prog:bubble7})  ilustra como essa abordagem permite o uso da mesma função \textbf{bubble()} para classificar diferentes tipos de dados.
+
+\lstinputlisting[label=prog:bubble7, caption=bubble\_7.c, numbers=left]{code/bubble_7.c}

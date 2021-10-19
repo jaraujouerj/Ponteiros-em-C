@@ -85,6 +85,14 @@ Uma maneira de ver como tudo isso se encaixa seria executar o programa a seguir 
 
 \lstinputlisting[label={prog1-1}, caption={Variáveis e ponteiros}, numbers=left, numberstyle=\tiny, stepnumber=1]{code/prog1-1.c}
 
+O programa \ref{prog1-1} foi compilado com o compilador gnu gcc, com as seguintes opções:\\
+\lstconsolestyle
+\begin{lstlisting}
+	gcc -Wall -std=c11 -pedantic -o prog1-1 prog1-1.c	
+\end{lstlisting}
+
+O parâmetro \texttt{Wall} faz com que o compilador emita todos os \textit{warnings}; \texttt{-std=c11} diz que ele deve seguir a versão \textbf{c11} da linguagem; e finalmente, \texttt{-pedantic} diz que ele deve seguir estritamente o padrão da linguagem, ignorando possíveis extensões do compilador.
+
 Um resultado possível, executando em um computador de 64 bits, seria:
 \lstconsolestyle
 \begin{lstlisting}
@@ -95,11 +103,11 @@ O valor do inteiro apontado por ptr é 2
 \end{lstlisting}
 \lstcodestyle
 \begin{remark}
-	Ainda temos que discutir aqueles aspectos de C que requerem o uso da expressão \textbf{(void *)} usada aqui. Por enquanto, inclua-o em seu código de teste. Explicaremos a razão por trás dessa expressão mais tarde.
+	Ainda temos que discutir os aspectos de C que requerem o uso da expressão \textbf{(void *)} para fazer a conversão de ponteiros para \textbf{int} para ponteiros para \textbf{void}, necessárias aqui para a impressão com \textbf{\%p}. Por enquanto, ignoramos este aspecto e nosso código é compilado com a opção \texttt{-pedantic}, que causa diversos \textit{warnings} caso não seja feita a conversão com \textbf{(void*)}. Voltaremos a este assunto na Seção \ref{expvoid}.
 
 \end{remark}
 
-A Figura \ref{enderecos} representa esquematicamente a memória para este arranjo de variáveis. Lembre-se que neste caso estamos trabalhando com um computador de 64 bits, assim os endereços têm 8 bytes. 
+A Figura \ref{enderecos} representa esquematicamente a memória para este arranjo de variáveis. Lembre-se que neste caso estamos trabalhando com um computador de 64 bits, assim os endereços têm 8 bytes (dos quais escrevemos 6, por simplicidade). 
 
 \begin{figure}[ht]
 	\begin{center}

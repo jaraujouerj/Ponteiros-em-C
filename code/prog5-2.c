@@ -22,6 +22,7 @@ int main(void) {
     mostra_nome(st_ptr); // passa o ponteiro
     return 0;
 }
+
 void mostra_nome(struct tag* p) {
     printf("\n%s ", p->nome);
     printf("%s ", p->sobrenome);

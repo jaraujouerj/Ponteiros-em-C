@@ -313,3 +313,5 @@ TSWLatexianTemp*
 # xwatermark package
 *.xwm
 
+
+*.ptc
